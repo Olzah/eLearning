@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="inherit_hr_employee_template_view" model="ir.ui.view">
+        <field name="name">hr.employee.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form" />
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page name="survey_info" string="ELearning Information" groups="hr.group_hr_user">
+                    <group string="Survey Information">
+<!--                        <label for="survey_status_liat_ids"/>-->
+                        <field name="survey_user_input_ids" />
+                    </group>
+                </page>
+            </notebook>
+        </field>
+
+    </record>
+
+<!-- Data records go here -->
+</odoo>
