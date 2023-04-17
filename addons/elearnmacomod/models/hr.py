@@ -8,4 +8,7 @@ from odoo import models, fields
 class HrEmployee(models.Model):
     _inherit = 'hr.employee'
 
-    test_field = fields.Char('Departmentss Namesss', required=True)
+    survey_user_input_ids = fields.One2many("survey.user_input", "employee_id", string='Survey Resume')
+
+
+
