@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id='survey_ratings_base_menu_action' model='ir.actions.act_window'>
+        <field name="name">Survey Ratings</field>
+        <field name="res_model">survey.ratings</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Survey Ratings" id="survey_ratings_base_menu"/>
+    <menuitem name="Ratings List" id="survey_ratings_menu" parent="survey_ratings_base_menu" action="survey_ratings_base_menu_action"/>
+
+    <record id="survey_rates_view_form" model="ir.ui.view">
+        <field name="name">Survey Rates Form</field>
+        <field name="model">survey.ratings</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="id"/>
+                        <field name="reviewer_id"/>
+<!--                        <field name="user_rating"/>-->
+                    </group>
+                    <group>
+                        <field name="survey_survey_id"/>
+                        <field name="opinion"/>
+                    </group>
+                    <group>
+                        <field name="user_rating"/>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="survey_rates_view_tree" model="ir.ui.view">
+        <field name="name">Survey Rates List</field>
+        <field name="model">survey.ratings</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="id"/>
+                <field name="reviewer_id"/>
+<!--                <field name="user_rating"/>-->
+                <field name="survey_survey_id"/>
+                <field name="opinion"/>
+            </tree>
+        </field>
+    </record>
+
+
+
+    <record id="survey_survey_template_view_form" model="ir.ui.view">
+        <field name="name">survey.survey.template.view.form</field>
+        <field name="model">survey.survey</field>
+        <field name="inherit_id" ref="survey.survey_survey_view_form"/>
+        <field name="arch" type="xml">
+            <header>
+                <xpath expr="//button[@name='action_test_survey']" position="after">
+                    <button id="button_create_ratings" name="%(action_survey_ratings_wizard_form)d"
+                            class="btn-primary"
+                            string="Rate Survey"
+                            type="action"
+                          />
+                </xpath>
+            </header>
+        </field>
+
+    </record>
+
+    <record id="survey_survey_view_form_inherit" model="ir.ui.view">
+        <field name="name">survey_survey_view_form_inherit</field>
+        <field name="model">survey.survey</field>
+        <field name="inherit_id" ref="survey.survey_survey_view_form" />
+        <field name="arch" type="xml">
+
+            <button name="action_survey_user_input_certified" position="after">
+                <button name="action_set_ratings_2"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-thumbs-o-up">
+                    <field string="Rating" name="success_rating_count" widget="statinfo"/>
+                </button>
+            </button>
+        </field>
+    </record>
+</odoo>
