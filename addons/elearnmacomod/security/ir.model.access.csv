@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+elearnmacomod.access_survey_ratings,access_survey_ratings,elearnmacomod.model_survey_ratings,base.group_user,1,1,1,1
+elearnmacomod.access_rate_survey_wizard,access_rate_survey_wizard,elearnmacomod.model_rate_survey_wizard,base.group_user,1,1,1,1
