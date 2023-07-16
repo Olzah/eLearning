@@ -5,6 +5,11 @@ class SurveyRatings(models.Model):
     _name = "survey.ratings"
     _description = "Survey Rating"
 
+    _sql_constraints = [
+        ('reviewer_rate_uniq', 'unique(survey_survey_id, reviewer_id)',
+         "SQL Vadidation Error! 'Sorry, You cannot rate this Survey more than once!"),
+    ]
+
     reviewer_id = fields.Many2one('hr.employee', string='Reviewer')
     rating = fields.Float('Survey Rating', compute="_compute_survey_rating")
     user_rating = fields.Selection([('1', 'Label 1'), ('2', 'Label 2'), ('3', 'Label 3'), ('4', 'Label 4'), ('5', 'Label 5')], string='Set Rating')
