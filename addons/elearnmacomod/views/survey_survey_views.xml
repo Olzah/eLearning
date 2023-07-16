@@ -9,6 +9,19 @@
     <menuitem name="Survey Ratings" id="survey_ratings_base_menu"/>
     <menuitem name="Ratings List" id="survey_ratings_menu" parent="survey_ratings_base_menu" action="survey_ratings_base_menu_action"/>
 
+    <record id="survey_rates_search_view" model="ir.ui.view">
+        <field name="name">Survey Search View</field>
+        <field name="model">survey.ratings</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="survey_survey_id"/>
+                <filter name="search_default_survey_survey_id"
+                        string="By Survey"
+                        context="{'survey_survey_id': 'id'}"
+                />
+            </search>
+        </field>
+    </record>
     <record id="survey_rates_view_form" model="ir.ui.view">
         <field name="name">Survey Rates Form</field>
         <field name="model">survey.ratings</field>
