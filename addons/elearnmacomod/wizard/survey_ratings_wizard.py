@@ -21,10 +21,13 @@ class RateSurveyWizard(models.TransientModel):
         [('1', 'Label 1'), ('2', 'Label 2'), ('3', 'Label 3'), ('4', 'Label 4'), ('5', 'Label 5')], string='Set Rating')
 
     def add_survey_ratings(self):
-        current_survey = self.env['survey.survey'].search([('id', '=', self.survey_ids.id)])
+        survey_finished_attempts = self.env['survey.user_input'] \
+            .search([('survey_id', '=', self.survey_ids.id), ('state', '=', 'done')]) \
+            .mapped('partner_id') \
+            .mapped('user_ids') \
+            .filtered(lambda user: user.id == self.env.uid)
 
-        count_review = current_survey.user_input_ids.filtered(lambda record: record.partner_id.id == self.reviewer_id.id and record.state == 'done')
-        if len(count_review) > 0:
+        if len(survey_finished_attempts) == 0:
             raise UserError('Sorry, You cant rate this Survey! You have to finish the course first!')
 
         self.env['survey.ratings'].create({
