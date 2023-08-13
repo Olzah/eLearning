@@ -9,6 +9,7 @@ from odoo.tests import common, tagged
 class TestSurveyModel(common.TransactionCase):
     def test_calculate_rating(self):
         current_survey = self.env['survey.survey'].browse(5)
+        current_survey._compute_survey_rating_statistic()
         self.assertEqual(current_survey.success_rating_count, 0)
         test_ratings = [
             {
@@ -38,6 +39,8 @@ class TestSurveyModel(common.TransactionCase):
         ]
         for rating in test_ratings:
             self.assertTrue(self.env['survey.ratings'].create(rating))
+
+        current_survey._compute_survey_rating_statistic()
         self.assertEqual(current_survey.success_rating_count, 2.5)
 
     def test_create_survey_rating(self):
