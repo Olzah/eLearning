@@ -1,5 +1,6 @@
 # coding: utf-8
 import psycopg2.errors
+from odoo.exceptions import UserError
 from odoo.tests import common, tagged
 
 
@@ -8,6 +9,7 @@ from odoo.tests import common, tagged
 class TestSurveyModel(common.TransactionCase):
     def test_calculate_rating(self):
         current_survey = self.env['survey.survey'].browse(5)
+        self.assertEqual(current_survey.success_rating_count, 0)
         test_ratings = [
             {
                 'reviewer_id': 1,
@@ -62,16 +64,16 @@ class TestSurveyModel(common.TransactionCase):
         with self.assertRaises(psycopg2.errors.UniqueViolation):
             rating_2 = self.env['survey.ratings'].create(set_rating)
 
-    # def test_is_user_create_survey_rating_without_complete_survey(self):
-    #     current_survey = self.env['survey.survey'].browse(5)
-    #     set_rating = {
-    #         'reviewer_id': 13,
-    #         'user_rating': '3',
-    #         'survey_survey_id': current_survey.id,
-    #         'opinion': "Some Example text"
-    #     }
-    #     survey = self.env['survey.ratings'].create(set_rating)
-    #     self.assertFalse(survey)
+    def test_is_user_create_survey_rating_without_complete_survey(self):
+        current_survey = self.env['survey.survey'].browse(5)
+        set_rating = {
+            'reviewer_id': 13,
+            'user_rating': '3',
+            'survey_survey_id': current_survey.id,
+            'opinion': "Some Example text"
+        }
+        with self.assertRaises(UserError):
+            survey = self.env['survey.ratings'].create(set_rating)
 
     def test_create_survey_rating_without_rate(self):
         current_survey = self.env['survey.survey'].browse(5)
