@@ -54,6 +54,7 @@
                 <field name="reviewer_id"/>
 <!--                <field name="user_rating"/>-->
                 <field name="survey_survey_id"/>
+                <field name="user_rating"/>
                 <field name="opinion"/>
             </tree>
         </field>
