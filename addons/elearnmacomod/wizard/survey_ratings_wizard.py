@@ -18,7 +18,7 @@ class RateSurveyWizard(models.TransientModel):
     survey_ids = fields.Many2one('survey.survey', string='Survey', default=_get_active_rec_id)
     opinion = fields.Char(string='Comment', required=True)
     user_rating = fields.Selection(
-        [('1', 'Label 1'), ('2', 'Label 2'), ('3', 'Label 3'), ('4', 'Label 4'), ('5', 'Label 5')], string='Set Rating', required=True)
+        [('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')], string='Set Rating', required=True)
 
     def add_survey_ratings(self):
         current_survey = self.env['survey.survey'].search([('id', '=', self.survey_ids.id)])
