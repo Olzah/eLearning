@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class SurveyRatings(models.Model):
@@ -30,3 +31,17 @@ class SurveyRatings(models.Model):
         print(round(self.success_rating_count/len(rating_records), 1))
         return round(self.success_rating_count/len(rating_records), 1)
 
+    @api.model
+    def create(self, values):
+        survey_id = values["survey_survey_id"]
+        hr_id = values["reviewer_id"]
+
+        survey_finished_attempts = self.env['survey.user_input'] \
+            .search([('survey_id', '=', survey_id), ('state', '=', 'done')]) \
+            .mapped('partner_id') \
+            .filtered(lambda partner: partner.id == self.env["hr.employee"].browse(hr_id).user_partner_id.id)
+
+        if len(survey_finished_attempts) == 0:
+            raise UserError('Sorry, You cant rate this Survey! You have to finish the course first!')
+
+        return super().create(values)
