@@ -12,7 +12,7 @@ class SurveyRatings(models.Model):
 
     reviewer_id = fields.Many2one('hr.employee', string='Reviewer')
     rating = fields.Float('Survey Rating', compute="_compute_survey_rating")
-    user_rating = fields.Selection([('1', 'Label 1'), ('2', 'Label 2'), ('3', 'Label 3'), ('4', 'Label 4'), ('5', 'Label 5')], string='Set Rating')
+    user_rating = fields.Selection([('1', 'Label 1'), ('2', 'Label 2'), ('3', 'Label 3'), ('4', 'Label 4'), ('5', 'Label 5')], string='Set Rating', required=True)
     survey_survey_id = fields.Many2one("survey.survey", string="Survey", index=True)
     opinion = fields.Char(string='Comment', required=True)
     success_rating_count = fields.Integer("Success", compute="_compute_survey_rating_statistic")
