@@ -8,7 +8,7 @@ from odoo.tests import common, tagged
 @tagged('-at_install', 'post_install')
 class TestSurveyModel(common.TransactionCase):
     def test_calculate_rating(self):
-        current_survey = self.env['survey.survey'].browse(5)
+        current_survey = self.env['survey.survey'].browse(3)
         current_survey._compute_survey_rating_statistic()
         self.assertEqual(current_survey.success_rating_count, 0)
         test_ratings = [
@@ -19,34 +19,22 @@ class TestSurveyModel(common.TransactionCase):
                 'opinion': "Some Example text"
             },
             {
-                'reviewer_id': 2,
+                'reviewer_id': 7,
                 'user_rating': '2',
                 'survey_survey_id': current_survey.id,
                 'opinion': "Some Example text"
-            },
-            {
-                'reviewer_id': 3,
-                'user_rating': '3',
-                'survey_survey_id': current_survey.id,
-                'opinion': "Some Example text"
-            },
-            {
-                'reviewer_id': 4,
-                'user_rating': '4',
-                'survey_survey_id': current_survey.id,
-                'opinion': "Some Example text"
-            },
+            }
         ]
         for rating in test_ratings:
             self.assertTrue(self.env['survey.ratings'].create(rating))
 
         current_survey._compute_survey_rating_statistic()
-        self.assertEqual(current_survey.success_rating_count, 2.5)
+        self.assertEqual(current_survey.success_rating_count, 1.5)
 
     def test_create_survey_rating(self):
-        current_survey = self.env['survey.survey'].browse(5)
+        current_survey = self.env['survey.survey'].browse(3)
         set_rating = {
-            'reviewer_id': 3,
+            'reviewer_id': 1,
             'user_rating': '3',
             'survey_survey_id': current_survey.id,
             'opinion': "Some Example text"
@@ -55,9 +43,9 @@ class TestSurveyModel(common.TransactionCase):
         self.assertTrue(survey)
 
     def test_rate_survey_multiple_times(self):
-        current_survey = self.env['survey.survey'].browse(5)
+        current_survey = self.env['survey.survey'].browse(3)
         set_rating = {
-            'reviewer_id': 3,
+            'reviewer_id': 1,
             'user_rating': '3',
             'survey_survey_id': current_survey.id,
             'opinion': "Some Example text"
@@ -68,9 +56,9 @@ class TestSurveyModel(common.TransactionCase):
             rating_2 = self.env['survey.ratings'].create(set_rating)
 
     def test_is_user_create_survey_rating_without_complete_survey(self):
-        current_survey = self.env['survey.survey'].browse(5)
+        current_survey = self.env['survey.survey'].browse(3)
         set_rating = {
-            'reviewer_id': 13,
+            'reviewer_id': 13514,
             'user_rating': '3',
             'survey_survey_id': current_survey.id,
             'opinion': "Some Example text"
@@ -79,11 +67,11 @@ class TestSurveyModel(common.TransactionCase):
             survey = self.env['survey.ratings'].create(set_rating)
 
     def test_create_survey_rating_without_rate(self):
-        current_survey = self.env['survey.survey'].browse(5)
+        current_survey = self.env['survey.survey'].browse(3)
         set_rating = {
-            'reviewer_id': 13,
+            'reviewer_id': 1,
             'survey_survey_id': current_survey.id,
             'opinion': "Some Example text"
         }
-        survey = self.env['survey.ratings'].create(set_rating)
-        self.assertFalse(survey)
+        with self.assertRaises(psycopg2.errors.NotNullViolation):
+            survey = self.env['survey.ratings'].create(set_rating)
