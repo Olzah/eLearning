@@ -21,12 +21,6 @@ class RateSurveyWizard(models.TransientModel):
         [('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')], string='Set Rating', required=True)
 
     def add_survey_ratings(self):
-        current_survey = self.env['survey.survey'].search([('id', '=', self.survey_ids.id)])
-        count_review = current_survey.user_input_ids.filtered(lambda record: record.partner_id.id == self.reviewer_id.user_partner_id.id and record.state == 'done')
-
-        if len(count_review) == 0:
-            raise UserError('Sorry, You cant rate this Survey! You have to finish the course first!')
-
         self.env['survey.ratings'].create({
                         'reviewer_id': self.reviewer_id.id,
                         'survey_survey_id': self.survey_ids.id,
